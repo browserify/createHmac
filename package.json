@@ -2,7 +2,7 @@
   "name": "create-hmac",
   "version": "1.0.1",
   "description": "node style hmacs in the browser",
-  "main": "create-hmac.js",
+  "main": "index.js",
   "scripts": {
     "test": "node test.js | tspec"
   },
@@ -28,5 +28,6 @@
   "dependencies": {
     "create-hash": "^1.0.0",
     "inherits": "^2.0.1"
-  }
+  },
+  "browser": "./create-hmac.js"
 }
