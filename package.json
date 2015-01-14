@@ -1,6 +1,6 @@
 {
   "name": "create-hmac",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "node style hmacs in the browser",
   "main": "index.js",
   "scripts": {
