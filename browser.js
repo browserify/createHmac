@@ -5,18 +5,19 @@ var inherits = require('inherits')
 var zeroBuffer = new Buffer(128)
 zeroBuffer.fill(0)
 
-module.exports = Hmac
+module.exports = function createHmac(alg, key) {
+  return new Hmac(alg, key)
+}
 inherits(Hmac, Transform)
 function Hmac (alg, key) {
-  if(!(this instanceof Hmac)) return new Hmac(alg, key)
 
-  Transform.call(this)
+  Transform.call(this);
   this._opad = opad
   this._alg = alg
 
   var blocksize = (alg === 'sha512' || alg === 'sha384') ? 128 : 64
 
-  key = this._key = !Buffer.isBuffer(key) ? new Buffer(key) : key
+  key = this._key = (typeof key === 'string') ? new Buffer(key) : key
 
   if(key.length > blocksize) {
     key = createHash(alg).update(key).digest()
@@ -36,28 +37,29 @@ function Hmac (alg, key) {
 }
 
 Hmac.prototype.update = function (data, enc) {
-  this.write(data, enc)
+  if (typeof data === 'string') {
+    data = new Buffer(data, enc)
+  }
+  this._hash.update(data)
   return this
 }
 
-Hmac.prototype._transform = function (data, _, next) {
+Hmac.prototype._transform = function (data, enc, next) {
+  if (enc) {
+    data = new Buffer(data, enc)
+  }
   this._hash.update(data)
   next()
 }
 
 Hmac.prototype._flush = function (next) {
-  var h = this._hash.digest()
-  this.push(createHash(this._alg).update(this._opad).update(h).digest())
+  this.push(this.digest())
   next()
 }
 
 Hmac.prototype.digest = function (enc) {
-  this.end()
-  var outData = new Buffer('')
-  var chunk
-  while ((chunk = this.read())) {
-    outData = Buffer.concat([outData, chunk])
-  }
+  var h = this._hash.digest()
+  var outData = createHash(this._alg).update(this._opad).update(h).digest();
   if (enc) {
     outData = outData.toString(enc)
   }
