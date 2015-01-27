@@ -1,9 +1,11 @@
 'use strict';
 var createHash = require('create-hash/browser');
-var Transform = require('stream').Transform;
 var inherits = require('inherits')
-var zeroBuffer = new Buffer(128)
-zeroBuffer.fill(0)
+
+var Transform = require('stream').Transform
+
+var ZEROS = new Buffer(128)
+ZEROS.fill(0)
 
 function Hmac(alg, key) {
   Transform.call(this)
@@ -21,7 +23,7 @@ function Hmac(alg, key) {
     key = createHash(alg).update(key).digest()
 
   } else if (key.length < blocksize) {
-    key = Buffer.concat([key, zeroBuffer], blocksize)
+    key = Buffer.concat([key, ZEROS], blocksize)
   }
 
   var ipad = this._ipad = new Buffer(blocksize)
