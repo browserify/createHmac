@@ -40,15 +40,12 @@ function Hmac(alg, key) {
 inherits(Hmac, Transform)
 
 Hmac.prototype.update = function (data, enc) {
-  if (typeof data === 'string') {
-    data = new Buffer(data, enc)
-  }
+  this._hash.update(data, enc)
 
-  this._hash.update(data)
   return this
 }
 
-Hmac.prototype._transform = function (data, enc, next) {
+Hmac.prototype._transform = function (data, _, next) {
   this._hash.update(data)
 
   next()
@@ -62,7 +59,7 @@ Hmac.prototype._flush = function (next) {
 
 Hmac.prototype.digest = function (enc) {
   var h = this._hash.digest()
-  
+
   return createHash(this._alg).update(this._opad).update(h).digest(enc)
 }
 
