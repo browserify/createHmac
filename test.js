@@ -1,11 +1,10 @@
 var test = require('tape')
 
 var algorithms = ['sha1', 'sha224','sha256', 'sha384', 'sha512', 'md5', 'rmd160']
-var formats = [undefined, 'base64', 'hex', 'utf8']
+var formats = [undefined, 'base64', 'hex', 'binary']
 
 var vectors = require('hash-test-vectors/hmac')
 var createHmac = require('./browser')
-
 algorithms.forEach(function (alg) {
   vectors.forEach(function (input) {
     var key = new Buffer(input.key, 'hex')
