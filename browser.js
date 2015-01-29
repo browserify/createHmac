@@ -62,9 +62,8 @@ Hmac.prototype._flush = function (next) {
 
 Hmac.prototype.digest = function (enc) {
   var h = this._hash.digest()
-  var outData = createHash(this._alg).update(this._opad).update(h).digest()
-
-  return enc ? outData.toString(enc) : outData
+  
+  return createHash(this._alg).update(this._opad).update(h).digest(enc)
 }
 
 module.exports = function createHmac(alg, key) {
