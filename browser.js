@@ -1,5 +1,5 @@
-'use strict';
-var createHash = require('create-hash/browser');
+'use strict'
+var createHash = require('create-hash/browser')
 var inherits = require('inherits')
 
 var Transform = require('stream').Transform
@@ -7,7 +7,7 @@ var Transform = require('stream').Transform
 var ZEROS = new Buffer(128)
 ZEROS.fill(0)
 
-function Hmac(alg, key) {
+function Hmac (alg, key) {
   Transform.call(this)
   alg = alg.toLowerCase()
   if (typeof key === 'string') {
@@ -21,7 +21,6 @@ function Hmac(alg, key) {
 
   if (key.length > blocksize) {
     key = createHash(alg).update(key).digest()
-
   } else if (key.length < blocksize) {
     key = Buffer.concat([key, ZEROS], blocksize)
   }
@@ -63,6 +62,6 @@ Hmac.prototype.digest = function (enc) {
   return createHash(this._alg).update(this._opad).update(h).digest(enc)
 }
 
-module.exports = function createHmac(alg, key) {
+module.exports = function createHmac (alg, key) {
   return new Hmac(alg, key)
 }
