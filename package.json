@@ -35,5 +35,10 @@
   "browser": {
     "index.js": "./browser/index.js",
     "1shot.js": "./browser/1shot.js"
-  }
+  },
+  "files": [
+    "browser",
+    "1shot.js",
+    "index.js"
+  ]
 }
