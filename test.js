@@ -5,6 +5,8 @@ var formats = [undefined, 'base64', 'hex', 'binary']
 
 var vectors = require('hash-test-vectors/hmac')
 var createHmac = require('./browser')
+var crypto1shot = require('./1shot')
+var browser1shot = require('./browser/1shot')
 algorithms.forEach(function (alg) {
   vectors.forEach(function (input) {
     var key = new Buffer(input.key, 'hex')
@@ -35,6 +37,22 @@ algorithms.forEach(function (alg) {
       var output = hmac.read()
       var truncated = input.truncate ? output.slice(0, input.truncate) : output
       t.equal(truncated.toString('hex'), input[alg.toLowerCase()])
+      t.end()
+    })
+  })
+
+  vectors.forEach(function (input) {
+    test('1shot(' + alg + ', ' + input.key.slice(0, 6) + '..., ' + input.data.slice(0, 6) + '...)', function (t) {
+      // node
+      var found = crypto1shot(alg, new Buffer(input.key, 'hex'), new Buffer(input.data, 'hex'))
+      var truncated = input.truncate ? found.slice(0, input.truncate) : found
+      t.equal(truncated.toString('hex'), input[alg.toLowerCase()])
+
+      // create-hash
+      found = browser1shot(alg, new Buffer(input.key, 'hex'), new Buffer(input.data, 'hex'))
+      truncated = input.truncate ? found.slice(0, input.truncate) : found
+      t.equal(truncated.toString('hex'), input[alg.toLowerCase()])
+
       t.end()
     })
   })

@@ -32,5 +32,8 @@
     "create-hash": "^1.1.0",
     "inherits": "^2.0.1"
   },
-  "browser": "./browser.js"
+  "browser": {
+    "index.js": "./browser/index.js",
+    "1shot.js": "./browser/1shot.js"
+  }
 }
