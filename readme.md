@@ -15,5 +15,3 @@ hmac.write('write to it as a stream');
 hmac.end();//remember it's a stream
 hmac.read();//only if you ended it as a stream though
 ```
-
-To get the JavaScript version even in node require `require('create-hmac/browser');`
