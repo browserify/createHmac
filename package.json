@@ -3,6 +3,7 @@
   "version": "1.1.6",
   "description": "node style hmacs in the browser",
   "files": [
+    "legacy.js",
     "browser.js",
     "index.js",
     "legacy.js"
