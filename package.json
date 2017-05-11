@@ -4,7 +4,8 @@
   "description": "node style hmacs in the browser",
   "files": [
     "browser.js",
-    "index.js"
+    "index.js",
+    "legacy.js"
   ],
   "main": "index.js",
   "scripts": {
