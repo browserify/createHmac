@@ -39,7 +39,7 @@ function Hmac (alg, key) {
 inherits(Hmac, Base)
 
 Hmac.prototype._update = function (data) {
-  this._hash.update(data)
+  this._ihash.update(data)
 }
 
 Hmac.prototype._final = function () {
