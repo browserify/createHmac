@@ -1,12 +1,8 @@
 'use strict'
 var inherits = require('inherits')
-var Legacy = require('./legacy')
 var Base = require('cipher-base')
 var Buffer = require('safe-buffer').Buffer
-var md5 = require('create-hash/md5')
-var RIPEMD160 = require('ripemd160')
-
-var sha = require('sha.js')
+var createHash = require('create-hash')
 
 var ZEROS = Buffer.alloc(128)
 
@@ -21,7 +17,7 @@ function Hmac (alg, key) {
   this._alg = alg
   this._key = key
   if (key.length > blocksize) {
-    var hash = alg === 'rmd160' ? new RIPEMD160() : sha(alg)
+    var hash = createHash(alg)
     key = hash.update(key).digest()
   }
   if (key.length < blocksize) {
@@ -35,7 +31,7 @@ function Hmac (alg, key) {
     ipad[i] = key[i] ^ 0x36
     opad[i] = key[i] ^ 0x5C
   }
-  this._hash = alg === 'rmd160' ? new RIPEMD160() : sha(alg)
+  this._hash = createHash(alg)
   this._hash.update(ipad)
 }
 
@@ -47,17 +43,10 @@ Hmac.prototype._update = function (data) {
 
 Hmac.prototype._final = function () {
   var h = this._hash.digest()
-  var hash = this._alg === 'rmd160' ? new RIPEMD160() : sha(this._alg)
+  var hash = createHash(this._alg)
   return hash.update(this._opad).update(h).digest()
 }
 
 module.exports = function createHmac (alg, key) {
-  alg = alg.toLowerCase()
-  if (alg === 'rmd160' || alg === 'ripemd160') {
-    return new Hmac('rmd160', key)
-  }
-  if (alg === 'md5') {
-    return new Legacy(md5, key)
-  }
   return new Hmac(alg, key)
 }
