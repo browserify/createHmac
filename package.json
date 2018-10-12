@@ -35,11 +35,9 @@
   },
   "dependencies": {
     "cipher-base": "^1.0.3",
-    "create-hash": "^1.1.0",
+    "create-hash": "^1.2.0",
     "inherits": "^2.0.1",
-    "ripemd160": "^2.0.0",
-    "safe-buffer": "^5.0.1",
-    "sha.js": "^2.4.8"
+    "safe-buffer": "^5.0.1"
   },
   "browser": "./browser.js"
 }
