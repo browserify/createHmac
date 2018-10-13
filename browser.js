@@ -47,5 +47,5 @@ Hmac.prototype._final = function () {
 }
 
 module.exports = function createHmac (alg, key) {
-  return new Hmac(alg, key)
+  return new Hmac(alg.toLowerCase(), key)
 }
