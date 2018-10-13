@@ -23,7 +23,8 @@ function Hmac (alg, key) {
   if (key.length > blocksize) {
     var hash = alg === 'rmd160' ? new RIPEMD160() : sha(alg)
     key = hash.update(key).digest()
-  } else if (key.length < blocksize) {
+  }
+  if (key.length < blocksize) {
     key = Buffer.concat([key, ZEROS], blocksize)
   }
 
