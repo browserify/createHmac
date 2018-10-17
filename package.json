@@ -8,6 +8,7 @@
     "legacy.js"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "standard": "standard",
     "test": "npm run-script standard && npm run-script unit",
