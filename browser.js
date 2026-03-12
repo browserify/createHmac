@@ -8,7 +8,27 @@ var RIPEMD160 = require('ripemd160')
 
 var sha = require('sha.js')
 
-var ZEROS = Buffer.alloc(128)
+var ZEROS = Buffer.alloc(144)
+
+var blockSizes = {
+  __proto__: null,
+  blake2b512: 128,
+  blake2s256: 64,
+  md5: 64,
+  ripemd160: 64,
+  rmd160: 64,
+  sha1: 64,
+  sha224: 64,
+  sha256: 64,
+  sha384: 128,
+  sha512: 128,
+  'sha512-224': 128,
+  'sha512-256': 128,
+  'sha3-224': 144,
+  'sha3-256': 136,
+  'sha3-384': 104,
+  'sha3-512': 72
+};
 
 function Hmac (alg, key) {
   Base.call(this, 'digest')
@@ -16,7 +36,10 @@ function Hmac (alg, key) {
     key = Buffer.from(key)
   }
 
-  var blocksize = (alg === 'sha512' || alg === 'sha384') ? 128 : 64
+  var blocksize = blockSizes[alg]
+  if (typeof blocksize !== 'number' || !blocksize) {
+    throw new TypeError('Digest algorithm not supported: ' + alg);
+  }
 
   this._alg = alg
   this._key = key
